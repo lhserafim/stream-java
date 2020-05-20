@@ -2,6 +2,7 @@ package application;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Program {
@@ -30,6 +31,26 @@ public class Program {
         // Implementar a regra do fibonati
         Stream<Long> st5 = Stream.iterate(new long[]{ 0L, 1L }, p->new long[]{ p[1], p[0]+p[1] }).map(p -> p[0]);
         System.out.println(Arrays.toString(st5.limit(10).toArray()));
+
+        System.out.println("----- P I P E L I N E ------");
+        // Pipeline: operações em streams retornam novas streams. Então é possível
+        // criar uma cadeia de operações (fluxo de processamento).
+        Stream<Integer> st6 = list.stream().map(p -> p * 10);
+        System.out.println(Arrays.toString(st6.toArray()));
+
+        // SOMATÓRIA DOS ELEMENTOS DA MINHA LISTA
+        // transforma a lista em stream list.stream()
+        // reduce pega o elemento inicial que é o elemento neutro da operação (na soma é zero, na multi é 1)
+        // e depois uma função que pega 2 elementos e gera resultado (x,y)
+        int sum = list.stream().reduce(0, (x,y) -> x + y);
+        System.out.println("Sum = " + sum);
+
+        // pego a lista de inteiros e transform em stream
+        List<Integer> newList = list.stream() // fazer operaçoes intermediárias na linha de baixo
+                .filter(x -> x % 2 == 0 ) // filtrar a lista pelo predicado % 2 = mod
+                .map(x -> x * 10).collect(Collectors.toList()); // operacao terminal, transforma stream em lista
+
+        System.out.println(Arrays.toString(newList.toArray()));
 
     }
 }
